@@ -187,6 +187,7 @@ if __name__ == "__main__":
    - 安装Node.js和npm：
      ```
      sudo apt install nodejs npm
+     sudo apt install -y openjdk-17-jdk
      ```
 
 2. **使用nvm安装**（Node Version Manager，推荐用于管理多个Node.js版本）：
