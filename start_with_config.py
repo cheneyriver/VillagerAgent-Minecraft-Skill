@@ -26,8 +26,9 @@ def run(api_model: str, api_base: str, task_type: str, task_idx: int, agent_num:
     # Agent.base_url = "https://api.deepseek.com/v1"
     # Agent.model = "deepseek-chat"
 
-    Agent.base_url = "https://dashscope.aliyuncs.com/compatible-mode/v1"
-    Agent.model = "qwen-max"
+    # Base agent model (tool-using executor)
+    Agent.base_url = "https://api.chatanywhere.tech/v1"
+    Agent.model = "gpt-4o-mini-ca"
     Agent.api_key_list = api_key_list
 
     # Agent.base_url = "http://10.112.59.240:59757/v1"
@@ -119,11 +120,12 @@ def run(api_model: str, api_base: str, task_type: str, task_idx: int, agent_num:
         #     "api_key_list": api_key_list
         # }
 
+        # High-level LLM for decomposition/planning/state/controller
         llm_config = {
             "api_key": api_key_list[0],
-            "api_base": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "api_model": "qwen3-235b-a22b",
-            "api_key_list": api_key_list
+            "api_base": "https://api.chatanywhere.tech/v1",
+            "api_model": "gpt-5.1",
+            "api_key_list": api_key_list,
         }
 
         tm_llm_config = llm_config
@@ -205,9 +207,9 @@ if __name__ == "__main__":
 
         llm_config = {
             "api_key": api_key_list[0],
-            "api_base": "https://dashscope.aliyuncs.com/compatible-mode/v1",
-            "api_model": "qwen3-235b-a22b",
-            "api_key_list": api_key_list
+            "api_base": "https://api.chatanywhere.tech/v1",
+            "api_model": "gpt-5.1",
+            "api_key_list": api_key_list,
         }
 
         process = multiprocessing.Process(target=run,

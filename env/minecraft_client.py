@@ -935,7 +935,7 @@ class Agent():
         # return the (action, observation), details.
         assert len(self.api_key_list) > 0, "Please set the api_key_list in Agent class."
 
-        if 'qwen' or "default" in self.model:
+        if "qwen" in self.model:
             from langchain_community.chat_models.tongyi import ChatTongyi
             self.llm = ChatTongyi(model=self.model, temperature=0, max_tokens=256, dashscope_api_key=random.choice(Agent.api_key_list), base_url=Agent.base_url, model_kwargs={"encoding": "utf-8"})
         elif "deepseek" in self.model:

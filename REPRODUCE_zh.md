@@ -3,7 +3,7 @@
 这份文档面向**在本仓库代码基础上**复现论文实验（或至少跑通 benchmark）的用户，目标是把“从零到跑出 `result/` 结果”说明清楚。
 
 本仓库里常用的 benchmark（环境）主要是 4 类：
-- **Meta（原子能力冒烟/评测）**：`env_type.meta`
+- **Meta（原子能力/评测）**：`env_type.meta`
 - **Construction（建造对照蓝图）**：`env_type.construction`
 - **Farming（农场做菜/合成）**：`env_type.farming`
 - **Puzzle / Escape Room（合作逃脱房间）**：`env_type.puzzle`
@@ -94,13 +94,13 @@ chmod +x start_server_fresh.sh stop_server.sh
 
 > 你实际用到几个 agent，就 /op 到几个（`start_with_config.py` 默认从 `Alice` 开始取名字）。
 
-### 终端 B：先跑 meta 冒烟（推荐 5 条）
+### 终端 B：先跑 meta （推荐 2 条）
 
 ```bash
 cd /path/to/VillagerAgent-Minecraft-Skill
 source venv/bin/activate
 
-python config.py --task meta --meta_task_num 5 --api_model qwen-max --host 127.0.0.1 --port 25565 --agent_num 1
+python config.py --task meta --meta_task_num 2 --api_model qwen-max --host 127.0.0.1 --port 25565 --agent_num 1
 python start_with_config.py --config qwen_max_launch_config_meta.json
 ```
 
