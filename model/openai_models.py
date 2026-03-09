@@ -153,12 +153,19 @@ class OpenAILanguageModel(AbstractLanguageModel):
         tokens["prompt_tokens"] += prompt_tokens
         tokens["completion_tokens"] += completion_tokens
         tokens["successful_requests"] += 1
+
+        # 费用估算：默认采用 gpt-5.1 单价
+        # - Prompt: 0.00875 USD / 1K tokens
+        # - Completion: 0.07 USD / 1K tokens
         if self.api_model == "gpt-3.5-turbo":
             tokens["total_cost"] += 0.001 * prompt_tokens * 0.001 + 0.0002 * completion_tokens * 0.001
-        if self.api_model == "gpt-4":
+        elif self.api_model == "gpt-4":
             tokens["total_cost"] += 0.03 * prompt_tokens * 0.001 + 0.06 * completion_tokens * 0.001
-        if self.api_model == "gpt-4-turbo":
+        elif self.api_model == "gpt-4-turbo":
             tokens["total_cost"] += 0.01 * prompt_tokens * 0.001 + 0.03 * completion_tokens * 0.001
+        else:
+            # 默认：按照 gpt-5.1 的价格计费（包括 gpt-5.1、本地代理模型等）
+            tokens["total_cost"] += 0.00875 * prompt_tokens * 0.001 + 0.07 * completion_tokens * 0.001
 
         with open("data/tokens.json", "w") as token_file:
             json.dump(tokens, token_file)
@@ -243,6 +250,13 @@ class OpenAILanguageModel(AbstractLanguageModel):
             temperature=temperature,
         )
         for chunk in stream:
+            # Some OpenAI-compatible gateways may emit non-standard chunks.
+            if not getattr(chunk, "choices", None):
+                continue
+            if len(chunk.choices) == 0:
+                continue
+            if getattr(chunk.choices[0], "delta", None) is None:
+                continue
             if chunk.choices[0].delta.content is not None:
                 # print(chunk.choices[0].delta.content, end="")
                 content += chunk.choices[0].delta.content
