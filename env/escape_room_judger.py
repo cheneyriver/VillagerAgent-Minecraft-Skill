@@ -31,7 +31,7 @@ mineflayer = require('mineflayer')
 pathfinder = require('mineflayer-pathfinder')
 collectBlock = require('mineflayer-collectblock')
 pvp = require("mineflayer-pvp").plugin
-minecraftHawkEye = require("minecrafthawkeye")
+# minecraftHawkEye plugin is optional and may not be available or may not export a valid plugin function
 Vec3 = require("vec3")
 Socks = require("socks5-client")
 minecraftData = require('minecraft-data')
@@ -49,7 +49,11 @@ bot = mineflayer.createBot({
 bot.loadPlugin(pathfinder.pathfinder)
 bot.loadPlugin(collectBlock.plugin)
 bot.loadPlugin(pvp)
-bot.loadPlugin(minecraftHawkEye)
+try:
+    minecraftHawkEye = require("minecrafthawkeye")
+    bot.loadPlugin(minecraftHawkEye)
+except Exception as e:
+    print(f"[escape_room_judger] Warning: failed to load minecraftHawkEye plugin: {e}")
 
 ### reset the environments
 with open("data/score.json", "w") as f:
